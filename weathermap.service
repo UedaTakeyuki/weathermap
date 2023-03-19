@@ -11,5 +11,8 @@ RestartSec=30
 Type=simple
 PIDFile=/var/run/weathermap.pid
 
+User=pi
+Environment=DISPLAY=:0
+
 [Install]
 WantedBy=multi-user.target
