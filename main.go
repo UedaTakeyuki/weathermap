@@ -7,8 +7,8 @@ func main() {
 	defer w.Destroy()
 	w.SetTitle("Weather Map")
 	w.SetSize(1000, 800, webview.HintNone)
-	w.Move(0,36)
-//	w.SetHtml("Thanks for using webview!")
-	w.Navigate("https://openweathermap.org/city/1850916")
+	w.Move(0, 36)
+	//	w.SetHtml("Thanks for using webview!")
+	w.Navigate("https://openweathermap.org/city/1859642")
 	w.Run()
 }
