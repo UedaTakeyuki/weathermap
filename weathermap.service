@@ -9,7 +9,7 @@ ExecStart=/home/pi/weathermap/weathermap
 Restart=always
 #RestartSec=90
 RestartSec=30
-RuntimeMaxSec=300
+#RuntimeMaxSec=300
 Type=simple
 PIDFile=/var/run/weathermap.pid
 
