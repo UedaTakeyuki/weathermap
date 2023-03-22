@@ -9,7 +9,9 @@ static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
   WebKitWebView *webView = user_data;
 //  webkit_web_view_run_javascript(webView, "window.scrollTo(230,100)", NULL, NULL, NULL);
-  webkit_web_view_run_javascript(webView, "location.reload()", NULL, NULL, NULL);
+  webkit_web_view_run_javascript(webView,
+                                 "location.reload(); document.querySelector('.stick-footer-panel__link').click();",
+                                 NULL, NULL, NULL);
   g_print("once_cb done.\n");
 //  return FALSE;
 }
