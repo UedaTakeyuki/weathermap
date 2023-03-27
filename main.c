@@ -49,7 +49,8 @@ int main(int argc, char* argv[]){
 
   // change font size
   WebKitSettings *settings = webkit_web_view_get_settings (webView);
-	webkit_settings_set_default_font_size(settings, 48);
+  webkit_settings_set_default_font_size(settings, 48);
+  webkit_settings_set_enable_write_console_messages_to_stdout(settings, TRUE);
 
   // horizontal scroll
 //  GtkAdjustment* adjustment = gtk_scrolled_window_get_hadjustment (webView);

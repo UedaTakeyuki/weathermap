@@ -13,6 +13,10 @@ RestartSec=30
 Type=simple
 PIDFile=/var/run/weathermap.pid
 
+# https://jyn.jp/systemd-log-to-file/
+StandardOutput=append:/home/pi/weathermap/log
+StandardError=append:/home/pi/weathermap/log
+
 User=pi
 Environment=DISPLAY=:0
 
