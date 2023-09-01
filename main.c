@@ -11,9 +11,9 @@ static gboolean once_cb(gpointer user_data){
 //  webkit_web_view_run_javascript(webView, "window.scrollTo(230,100)", NULL, NULL, NULL);
   webkit_web_view_run_javascript(webView,
                                  "location.reload();"
-                                 "const footer_panel = document.querySelector('.stick-footer-panel__link')"
+                                 "const footer_panel = document.querySelector('.stick-footer-panel__link');"
                                  "if (footer_panel != null) {"
-                                 "  footer_panel.click()"
+                                 "  footer_panel.click();"
                                  "}",
                                  NULL, NULL, NULL);
   g_print("once_cb done.\n");
