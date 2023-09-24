@@ -1,6 +1,7 @@
 // https://wiki.gnome.org/Projects/WebKitGtk/ProgrammingGuide/Tutorial
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
+#include "displaysize.h"
 
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
@@ -26,12 +27,31 @@ int main(int argc, char* argv[]){
 
   // Create an 800x600 window that will contain the browser instance
   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size(GTK_WINDOW(main_window), 1000, 800);
+  // hide menu bar
+  gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
+
+  // set window size
+  gint setting_width = 1000; // default width
+  gint setting_height = 800; // default height
+  gint result; // exit-status of "displaysize" func, 0: succeeded, 1: fault
+  gint width, height; 
+  result = displaysize(&width, &height);  
+  if (result == 0){
+    setting_width = width * 10/18;
+    setting_height = height*9/10 -36;
+  }
+
+  gtk_window_set_default_size(GTK_WINDOW(main_window), setting_width, setting_height);
   gtk_window_move(GTK_WINDOW(main_window),0, 36);
 
 
   // Create a browser instance
   WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
+
+  // Set zoom level with current width for width 1024.
+  gdouble zoom_level = (gdouble)width / 1024.0;
+  g_print("zoom_level: %lf\n", zoom_level);
+  webkit_web_view_set_zoom_level(webView,  zoom_level);
 
   // Put the browser area into the main window
   gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
