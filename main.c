@@ -34,8 +34,8 @@ int main(int argc, char* argv[]){
   gint setting_width = 1000; // default width
   gint setting_height = 800; // default height
   gint result; // exit-status of "displaysize" func, 0: succeeded, 1: fault
-  gint width, height; 
-  result = displaysize(&width, &height);  
+  gint width, height;
+  result = displaysize(&width, &height);
   if (result == 0){
     setting_width = width * 10/18;
     setting_height = height*9/10 -36;
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
   // Set zoom level with current width for width 1024.
   gdouble zoom_level = (gdouble)width / 1024.0;
   g_print("zoom_level: %lf\n", zoom_level);
-  webkit_web_view_set_zoom_level(webView,  zoom_level);
+  //webkit_web_view_set_zoom_level(webView,  zoom_level);
 
   // Put the browser area into the main window
   gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
