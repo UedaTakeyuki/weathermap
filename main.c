@@ -21,6 +21,7 @@ web_view_javascript_finished (GObject      *object,
     if (!js_result) {
         g_warning ("Error running javascript: %s", error->message);
         g_error_free (error);
+        gtk_main_quit();
         return;
     }
 
@@ -56,9 +57,9 @@ static gboolean once_cb(gpointer user_data){
                                  "    footer_panel.click();"
                                  "  }"
                                  "} catch (e) {"
-                                 "  return e.name + ': ' + e.message"
-                                 "}"
-                                 "return ''",
+                                 "  document.write(e.name + ': ' + e.message);"
+                                 "  throw e"
+                                 "}",
                                  NULL,
                                  web_view_javascript_finished,
                                  NULL);
