@@ -3,6 +3,8 @@
 #include <webkit2/webkit2.h>
 #include "displaysize.h"
 
+GtkWidget *main_window;
+
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
@@ -21,7 +23,8 @@ web_view_javascript_finished (GObject      *object,
     if (!js_result) {
         g_warning ("Error running javascript: %s", error->message);
         g_error_free (error);
-        gtk_main_quit();
+//        gtk_main_quit();
+        gtk_widget_destroy(main_window);
         return;
     }
 
@@ -72,7 +75,7 @@ int main(int argc, char* argv[]){
   gtk_init(&argc, &argv);
 
   // Create an 800x600 window that will contain the browser instance
-  GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  /*GtkWidget **/main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   // hide menu bar
   gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
 
@@ -108,7 +111,7 @@ int main(int argc, char* argv[]){
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
   // Load a web page into the browser instance
-  webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1859642");
+  webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
 
   // Make sure that when the browser area becomes visible, it will get mouse
   // and keyboard events
