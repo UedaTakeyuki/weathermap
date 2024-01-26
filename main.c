@@ -51,22 +51,28 @@ web_view_javascript_finished (GObject      *object,
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
   WebKitWebView *webView = user_data;
+
+  // read script
+  gchar *script;
+  gsize length;
+  GError *error;
+  if (g_file_get_contents ("relode.js",
+                     &script,
+                     &length,
+                     &error)){
+    g_warning("script: %s", script);
+  } else {
+    g_warning ("Error running javascript: %s", error->message);
+    g_error_free (error);
+  }
 //  webkit_web_view_run_javascript(webView, "window.scrollTo(230,100)", NULL, NULL, NULL);
   webkit_web_view_run_javascript(webView,
-                                 "try {"
-                                 "  location.reload();"
-                                 "  const footer_panel = document.querySelector('.stick-footer-panel__link');"
-                                 "  if (footer_panel != null) {"
-                                 "    footer_panel.click();"
-                                 "  }"
-                                 "} catch (e) {"
-                                 "  document.write(e.name + ': ' + e.message);"
-                                 "  throw e"
-                                 "}",
+                                 script,
                                  NULL,
                                  web_view_javascript_finished,
                                  NULL);
   g_print("once_cb done.\n");
+  g_free (script);
 //  return FALSE;
 }
 
