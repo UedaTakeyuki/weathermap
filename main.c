@@ -110,8 +110,25 @@ int main(int argc, char* argv[]){
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
+  // read city ID
+  gchar *contents;
+  gsize length;
+  GError *error;
+  if (g_file_get_contents ("cityID.txt",
+                     &contents,
+                     &length,
+                     &error)){
+    g_warning("city ID: %s", contents);
+  } else {
+    g_warning ("Error running javascript: %s", error->message);
+    g_error_free (error);
+  }
   // Load a web page into the browser instance
-  webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
+  // webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
+  gchar *url = g_strconcat("https://openweathermap.org/city/", contents, NULL);
+  g_free (contents);
+  webkit_web_view_load_uri(webView, url);
+  g_free (url);
 
   // Make sure that when the browser area becomes visible, it will get mouse
   // and keyboard events
