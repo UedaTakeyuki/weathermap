@@ -9,6 +9,7 @@ static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
 // https://webkitgtk.org/reference/webkit2gtk/2.5.1/WebKitWebView.html#webkit-web-view-run-javascript-finish
+/*
 static void
 web_view_javascript_finished (GObject      *object,
                               GAsyncResult *result,
@@ -47,7 +48,7 @@ web_view_javascript_finished (GObject      *object,
     }
     webkit_javascript_result_unref (js_result);
 }
-
+*/
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
   WebKitWebView *webView = user_data;
@@ -69,7 +70,7 @@ static gboolean once_cb(gpointer user_data){
   webkit_web_view_run_javascript(webView,
                                  script,
                                  NULL,
-                                 web_view_javascript_finished,
+                                 NULL, //web_view_javascript_finished,
                                  NULL);
   g_print("once_cb done.\n");
   g_free (script);
