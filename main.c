@@ -3,7 +3,7 @@
 #include <webkit2/webkit2.h>
 #include "displaysize.h"
 
-GtkWidget *main_window;
+// GtkWidget *main_window;
 
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]){
   gtk_init(&argc, &argv);
 
   // Create an 800x600 window that will contain the browser instance
-  /*GtkWidget **/main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   // hide menu bar
   gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
 
