@@ -8,6 +8,11 @@
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
+typedef	struct {
+	WebKitWebView *webView;
+  gchar *script;
+} OnceCbParamType;
+
 // https://webkitgtk.org/reference/webkit2gtk/2.5.1/WebKitWebView.html#webkit-web-view-run-javascript-finish
 /*
 static void
@@ -51,9 +56,11 @@ web_view_javascript_finished (GObject      *object,
 */
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
-  WebKitWebView *webView = user_data;
+  //WebKitWebView *webView = user_data;
+  OnceCbParamType *param = user_data;
 
   // read script
+/*
   gchar *script;
   gsize length;
   GError *error;
@@ -66,14 +73,15 @@ static gboolean once_cb(gpointer user_data){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
+*/
 //  webkit_web_view_run_javascript(webView, "window.scrollTo(230,100)", NULL, NULL, NULL);
-  webkit_web_view_run_javascript(webView,
-                                 script,
+  webkit_web_view_run_javascript(param->webView,
+                                 param->script,
                                  NULL,
                                  NULL, //web_view_javascript_finished,
                                  NULL);
   g_print("once_cb done.\n");
-  g_free (script);
+//  g_free (script);
 //  return FALSE;
 }
 
@@ -157,8 +165,27 @@ int main(int argc, char* argv[]){
   // https://stackoverflow.com/a/21861770/11073131
   //webkit_web_view_run_javascript(webView, "window.scrollTo(1500,500)", NULL, NULL, NULL);
 
+  // read script
+  gchar *script;
+//  gsize length;
+//  GError *error;
+  if (g_file_get_contents ("relode.js",
+                     &script,
+                     &length,
+                     &error)){
+    g_warning("script: %s", script);
+  } else {
+    g_warning ("Error running javascript: %s", error->message);
+    g_error_free (error);
+  }
+
+  // make param
+  OnceCbParamType param;
+  param.webView = webView;
+  param.script = script;
+
   // call once_cb every 5 min.
-  g_timeout_add (300000, once_cb, webView);
+  g_timeout_add (300000, once_cb, &param/*webView*/);
 
   // Run the main GTK+ event loop
   gtk_main();
