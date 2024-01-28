@@ -1,3 +1,4 @@
+/*
 try {
   location.reload();
   const footer_panel = document.querySelector('.stick-footer-panel__link');
@@ -8,4 +9,5 @@ try {
   document.write(e.name + ': ' + e.message);
   throw e
 }
-
+*/
+location.reload();

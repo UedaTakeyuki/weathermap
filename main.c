@@ -165,15 +165,17 @@ int main(int argc, char* argv[]){
   // https://stackoverflow.com/a/21861770/11073131
   //webkit_web_view_run_javascript(webView, "window.scrollTo(1500,500)", NULL, NULL, NULL);
 
+  // get enable_write_console_messages_to_stdout
+  g_warning("enable_write_console_messages_to_stdout: %d",
+            webkit_settings_get_enable_write_console_messages_to_stdout(settings));
+
   // read script
-  gchar *script;
-//  gsize length;
-//  GError *error;
-  if (g_file_get_contents ("relode.js",
-                     &script,
+  gchar *allowCookiesScript;
+  if (g_file_get_contents ("allowCookies.js",
+                     &allowCookiesScript,
                      &length,
                      &error)){
-    g_warning("script: %s", script);
+    g_warning("script: %s", allowCookiesScript);
   } else {
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
@@ -182,7 +184,31 @@ int main(int argc, char* argv[]){
   // make param
   OnceCbParamType param;
   param.webView = webView;
-  param.script = script;
+  param.script = allowCookiesScript;
+
+  // call script after 1 min
+  //g_timeout_add (60000, once_cb, &param/*webView*/);
+  once_cb((gpointer)&param);
+
+
+  // read script
+  gchar *relodeScript;
+//  gsize length;
+//  GError *error;
+  if (g_file_get_contents ("relode.js",
+                     &relodeScript,
+                     &length,
+                     &error)){
+    g_warning("script: %s", relodeScript);
+  } else {
+    g_warning ("Error running javascript: %s", error->message);
+    g_error_free (error);
+  }
+
+  // make param
+//  OnceCbParamType param;
+//  param.webView = webView;
+  param.script = relodeScript;
 
   // call once_cb every 5 min.
   g_timeout_add (300000, once_cb, &param/*webView*/);
