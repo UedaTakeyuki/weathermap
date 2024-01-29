@@ -56,33 +56,30 @@ web_view_javascript_finished (GObject      *object,
 */
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
-  //WebKitWebView *webView = user_data;
   OnceCbParamType *param = user_data;
 
-  // read script
-/*
-  gchar *script;
-  gsize length;
-  GError *error;
-  if (g_file_get_contents ("relode.js",
-                     &script,
-                     &length,
-                     &error)){
-    g_warning("script: %s", script);
-  } else {
-    g_warning ("Error running javascript: %s", error->message);
-    g_error_free (error);
-  }
-*/
-//  webkit_web_view_run_javascript(webView, "window.scrollTo(230,100)", NULL, NULL, NULL);
   webkit_web_view_run_javascript(param->webView,
                                  param->script,
                                  NULL,
                                  NULL, //web_view_javascript_finished,
                                  NULL);
+  g_warning("script: %s", param->script);
   g_print("once_cb done.\n");
-//  g_free (script);
-//  return FALSE;
+  return FALSE;
+}
+
+static gboolean repeated_cb(gpointer user_data){
+  // https://stackoverflow.com/a/21861770/11073131
+  OnceCbParamType *param = user_data;
+
+  webkit_web_view_run_javascript(param->webView,
+                                 param->script,
+                                 NULL,
+                                 NULL, //web_view_javascript_finished,
+                                 NULL);
+  g_warning("script: %s", param->script);
+  g_print("once_cb done.\n");
+  //return FALSE;
 }
 
 int main(int argc, char* argv[]){
@@ -175,7 +172,7 @@ int main(int argc, char* argv[]){
                      &allowCookiesScript,
                      &length,
                      &error)){
-    g_warning("script: %s", allowCookiesScript);
+//    g_warning("script: %s", allowCookiesScript);
   } else {
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
@@ -187,10 +184,11 @@ int main(int argc, char* argv[]){
   param.script = allowCookiesScript;
 
   // call script after 1 min
-  //g_timeout_add (60000, once_cb, &param/*webView*/);
-  once_cb((gpointer)&param);
-
-
+  g_timeout_add_seconds (60, once_cb, &param);
+  //once_cb((gpointer)&param);
+  //GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&once_cb, &param);
+//  g_thread_join(thread_ice);
+//  g_thread_unref(thread_ice);
   // read script
   gchar *relodeScript;
 //  gsize length;
@@ -199,19 +197,19 @@ int main(int argc, char* argv[]){
                      &relodeScript,
                      &length,
                      &error)){
-    g_warning("script: %s", relodeScript);
+//    g_warning("script: %s", relodeScript);
   } else {
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
 
   // make param
-//  OnceCbParamType param;
-//  param.webView = webView;
-  param.script = relodeScript;
+  OnceCbParamType reloadParam;
+  reloadParam.webView = webView;
+  reloadParam.script = relodeScript;
 
   // call once_cb every 5 min.
-  g_timeout_add (300000, once_cb, &param/*webView*/);
+  g_timeout_add (300000, repeated_cb, &reloadParam);
 
   // Run the main GTK+ event loop
   gtk_main();
