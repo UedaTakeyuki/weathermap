@@ -10,4 +10,8 @@ try {
   throw e
 }
 */
-location.reload();
+try {
+  location.reload()
+} catch (e) {
+  console.log("Javascript ERROR:", e.name + ': ' + e.message);
+}
