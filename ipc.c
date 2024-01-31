@@ -8,9 +8,10 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <errno.h>
+#include "ipc.h"
 #define MAXLEN 128
 
-void cleanUp(int signum);
+//void cleanUp(int signum);
 const char sockname[] = "/tmp/weathermap";
 int connfd;
 int datafd;

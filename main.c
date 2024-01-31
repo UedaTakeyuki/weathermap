@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 #include "displaysize.h"
+#include "ipc.h"
 
 // GtkWidget *main_window;
 
@@ -211,6 +212,10 @@ int main(int argc, char* argv[]){
   // call once_cb every 5 min.
   g_timeout_add (300000, repeated_cb, &reloadParam);
 
+  // Run the server thread
+  GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&server, NULL);
+  g_thread_unref(thread_ice);
+
   // Run the main GTK+ event loop
   gtk_main();
 
@@ -225,3 +230,4 @@ static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window){
   gtk_widget_destroy(window);
   return TRUE;
 }
+
