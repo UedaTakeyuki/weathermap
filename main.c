@@ -213,8 +213,13 @@ int main(int argc, char* argv[]){
   g_timeout_add (300000, repeated_cb, &reloadParam);
 
   // Run the server thread
+  g_warning ("Before Thread RUnning");
   GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&server, NULL);
+  g_warning ("Before Thread Join");
+//  g_thread_join(thread_ice);
+  g_warning ("Before Thread unref");
   g_thread_unref(thread_ice);
+  g_warning ("After Thread unref");
 
   // Run the main GTK+ event loop
   gtk_main();
