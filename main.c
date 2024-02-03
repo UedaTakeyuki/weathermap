@@ -78,7 +78,7 @@ static gboolean repeated_cb(gpointer user_data){
                                  NULL,
                                  NULL, //web_view_javascript_finished,
                                  NULL);
-  g_warning("script: %s", param->script);
+//  g_warning("script: %s", param->script);
   g_print("once_cb done.\n");
   //return FALSE;
 }
@@ -184,8 +184,8 @@ int main(int argc, char* argv[]){
   param.webView = webView;
   param.script = allowCookiesScript;
 
-  // call script after 1 min
-  g_timeout_add_seconds (60, once_cb, &param);
+  // call script after 1 min 30sec
+  g_timeout_add_seconds (90, once_cb, &param);
   //once_cb((gpointer)&param);
   //GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&once_cb, &param);
 //  g_thread_join(thread_ice);
