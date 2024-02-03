@@ -10,10 +10,10 @@ function startallowCookie(){
 */
 function allowCookie(){
   console.log("KERO!!!!!YOOOO!!!!ON!!!!!")
-  const footer_panel = document.querySelector('.stick-footer-panel__link');
-  if (footer_panel != null) {
-    footer_panel.click();
-    console.log("footer_panel.clicked")
+  const optin_button = document.querySelector('.gdpr-banner__button--opt-in');
+  if (optin_button != null) {
+    optin_button.click();
+    console.log("optin_button clicked")
 //    clearInterval(ptimer);
   } else {
     console.log("calling next allowCookies")
