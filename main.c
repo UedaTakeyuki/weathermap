@@ -139,7 +139,7 @@ int main(int argc, char* argv[]){
   // Load a web page into the browser instance
   // webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
   gchar *url = g_strconcat("https://openweathermap.org/city/", contents, NULL);
-  g_free (contents);
+//  g_free (contents);
   webkit_web_view_load_uri(webView, url);
   g_free (url);
 
@@ -203,6 +203,10 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
+
+  // concatinate URL
+//  relodeScript = g_strconcat("let url = '", "https://openweathermap.org/city/", contents, "'\n", relodeScript, NULL);
+  g_warning("script: %s", relodeScript);
 
   // make param
   OnceCbParamType reloadParam;
