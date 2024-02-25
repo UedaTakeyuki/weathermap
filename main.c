@@ -205,7 +205,7 @@ int main(int argc, char* argv[]){
   }
 
   // concatinate URL
-//  relodeScript = g_strconcat("let url = '", "https://openweathermap.org/city/", contents, "'\n", relodeScript, NULL);
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", contents, "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
 
   // make param
