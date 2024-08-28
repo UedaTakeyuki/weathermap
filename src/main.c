@@ -91,7 +91,8 @@ int main(int argc, char* argv[]){
   // Create an 800x600 window that will contain the browser instance
   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   // hide menu bar
-  gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
+//  gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
+  gtk_window_set_decorated(GTK_WINDOW(main_window), TRUE);
 
   // set window size
   /*
@@ -223,9 +224,10 @@ int main(int argc, char* argv[]){
   reloadParam.script = relodeScript;
 
   // call once_cb every 5 min.
-  g_timeout_add (300000, repeated_cb, &reloadParam);
+//  g_timeout_add (300000, repeated_cb, &reloadParam);
 
   // Run the server thread
+/*
   g_warning ("Before Thread RUnning");
   GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&server, NULL);
   g_warning ("Before Thread Join");
@@ -233,6 +235,7 @@ int main(int argc, char* argv[]){
   g_warning ("Before Thread unref");
   g_thread_unref(thread_ice);
   g_warning ("After Thread unref");
+*/
 
   // Run the main GTK+ event loop
   gtk_main();
