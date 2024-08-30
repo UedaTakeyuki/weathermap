@@ -1,4 +1,5 @@
 #include "ipc.h"
+#include <stdio.h>
 
 void
 server(void)

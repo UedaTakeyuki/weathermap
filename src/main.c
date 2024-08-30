@@ -15,47 +15,6 @@ typedef	struct {
   gchar *script;
 } OnceCbParamType;
 
-// https://webkitgtk.org/reference/webkit2gtk/2.5.1/WebKitWebView.html#webkit-web-view-run-javascript-finish
-/*
-static void
-web_view_javascript_finished (GObject      *object,
-                              GAsyncResult *result,
-                              gpointer      user_data)
-{
-    WebKitJavascriptResult *js_result;
-    JSValueRef              value;
-    JSGlobalContextRef      context;
-    GError                 *error = NULL;
-
-    js_result = webkit_web_view_run_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
-    if (!js_result) {
-        g_warning ("Error running javascript: %s", error->message);
-        g_error_free (error);
-//        gtk_main_quit();
-        gtk_widget_destroy(main_window);
-        return;
-    }
-
-    context = webkit_javascript_result_get_global_context (js_result);
-    value = webkit_javascript_result_get_value (js_result);
-    if (JSValueIsString (context, value)) {
-        JSStringRef js_str_value;
-        gchar      *str_value;
-        gsize       str_length;
-
-        js_str_value = JSValueToStringCopy (context, value, NULL);
-        str_length = JSStringGetMaximumUTF8CStringSize (js_str_value);
-        str_value = (gchar *)g_malloc (str_length);
-        JSStringGetUTF8CString (js_str_value, str_value, str_length);
-        JSStringRelease (js_str_value);
-        g_print ("Script result: %s\n", str_value);
-        g_free (str_value);
-    } else {
-        g_warning ("Error running javascript: unexpected return value");
-    }
-    webkit_javascript_result_unref (js_result);
-}
-*/
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
   OnceCbParamType *param = user_data;
@@ -81,7 +40,28 @@ static gboolean repeated_cb(gpointer user_data){
                                  NULL);
 //  g_warning("script: %s", param->script);
   g_print("once_cb done.\n");
-  //return FALSE;
+  return TRUE;
+}
+
+static void refresh_site_every_5_minutes(gpointer user_data){
+  OnceCbParamType *param = user_data;
+  for (;;) {
+//    delay(300000);
+//    sleep(300);
+    {
+      /* XXX Too bad if you don't have select(). */
+      struct timeval t;
+      t.tv_sec = 300;
+      t.tv_usec = 0;
+      select(0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &t);
+    }
+    webkit_web_view_run_javascript(param->webView,
+                                   param->script,
+                                   NULL,
+                                   NULL, //web_view_javascript_finished,
+                                   NULL);
+    g_print("once_cb done.\n");
+  }
 }
 
 int main(int argc, char* argv[]){
@@ -91,22 +71,8 @@ int main(int argc, char* argv[]){
   // Create an 800x600 window that will contain the browser instance
   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   // hide menu bar
-//  gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
-  gtk_window_set_decorated(GTK_WINDOW(main_window), TRUE);
-
-  // set window size
-  /*
-  gint setting_width = 1000; // default width
-  gint setting_height = 800; // default height
-  gint result; // exit-status of "displaysize" func, 0: succeeded, 1: fault
-  gint width, height;
-  result = displaysize(&width, &height);
-  if (result == 0){
-    setting_width = width * 10/18;
-//    setting_height = height*9/10 -36;
-    setting_height = height -36;
-  }
-*/
+  gtk_window_set_decorated(GTK_WINDOW(main_window), FALSE);
+//  gtk_window_set_decorated(GTK_WINDOW(main_window), TRUE);
 
   // get width_height
   struct width_height *wh = getScreenSizeFromGDK();
@@ -115,7 +81,6 @@ int main(int argc, char* argv[]){
 
   gtk_window_set_default_size(GTK_WINDOW(main_window), setting_width, setting_height);
   gtk_window_move(GTK_WINDOW(main_window),0, 36);
-
 
   // Create a browser instance
   WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
@@ -169,7 +134,6 @@ int main(int argc, char* argv[]){
 //  GtkAdjustment* adjustment = gtk_scrolled_window_get_hadjustment (webView);
 //  gtk_adjustment_set_value (adjustment, 32);
 
-
   // https://stackoverflow.com/a/21861770/11073131
   //webkit_web_view_run_javascript(webView, "window.scrollTo(1500,500)", NULL, NULL, NULL);
 
@@ -195,15 +159,12 @@ int main(int argc, char* argv[]){
   param.script = allowCookiesScript;
 
   // call script after 1 min 30sec
+  //GSource* gsource = g_timeout_source_new_seconds (300);
   g_timeout_add_seconds (90, once_cb, &param);
   //once_cb((gpointer)&param);
-  //GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&once_cb, &param);
-//  g_thread_join(thread_ice);
-//  g_thread_unref(thread_ice);
+
   // read script
   gchar *relodeScript;
-//  gsize length;
-//  GError *error;
   if (g_file_get_contents ("relode.js",
                      &relodeScript,
                      &length,
@@ -224,7 +185,9 @@ int main(int argc, char* argv[]){
   reloadParam.script = relodeScript;
 
   // call once_cb every 5 min.
-//  g_timeout_add (300000, repeated_cb, &reloadParam);
+  //g_timeout_add (300000, repeated_cb, &reloadParam);
+  //g_timeout_add_seconds (300, repeated_cb, &reloadParam);
+  GThread *thread_refresh_site = g_thread_new("refresh_site thread", (gpointer)&refresh_site_every_5_minutes, &reloadParam);
 
   // Run the server thread
 /*
