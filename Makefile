@@ -1,7 +1,7 @@
-SRCS    = src/main.c src/ipc/ipc.c src/screensize/screensize.c
+SRCS    = src/main.c src/ipc/*.c src/screensize/*.c src/restrictcpu/*.c
 #EXTPATH = ../getDisplaySize
 #EXTOBJS = $(EXTPATH)/displaysize.o
-HDRS    = src/ipc/ipc.h src/screensize/screensize.h # $(EXTPATH)/displaysize.h
+HDRS    = src/ipc/*.h src/screensize/*.h src/restrictcpu/*.h
 ALL     = $(SRCS) $(EXTOBJS) $(HDRS) 
 
 weathermap: $(ALL)

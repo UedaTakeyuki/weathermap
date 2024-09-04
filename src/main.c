@@ -4,6 +4,7 @@
 //#include "displaysize.h"
 #include "ipc/ipc.h"
 #include "screensize/screensize.h"
+#include "restrictcpu/restrictcpu.h"
 
 // GtkWidget *main_window;
 
@@ -53,7 +54,9 @@ static void refresh_site_every_5_minutes(gpointer user_data){
       struct timeval t;
       t.tv_sec = 300;
       t.tv_usec = 0;
+      g_print("before select.\n");
       select(0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &t);
+      g_print("after select.\n");
     }
     webkit_web_view_run_javascript(param->webView,
                                    param->script,
@@ -199,6 +202,10 @@ int main(int argc, char* argv[]){
   g_thread_unref(thread_ice);
   g_warning ("After Thread unref");
 */
+
+  // Restrict CPU usage of WebKitWebProces
+  //g_timeout_add_seconds (100, cpu_restrict_cb, NULL);
+  //restrict_cpu_usage_of_WebKitWebProces();
 
   // Run the main GTK+ event loop
   gtk_main();
