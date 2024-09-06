@@ -1,17 +1,25 @@
 #!/usr/bin/bash
 
-# delay until the drawing is finished
-sleep 100
-
 # get weathermap process ID
 weathermapProcess=$(ps -aef | grep weathermap/weathermap)
 set ${weathermapProcess}
-weathermapProcessID=$2
 
-# get WebKitWebProcess ID
-pgrep=$(pgrep -lP ${weathermapProcessID})
-set ${pgrep}
-WebKitWebProcesID=$3
+echo $6
+echo $8
 
-# call cpulimit
-cpulimit -l 5 -p ${WebKitWebProcesID}
+if [ "$6" = "?" ]; then
+  # delay until the drawing is finished
+  sleep 100
+
+  weathermapProcessID=$2
+
+  # get WebKitWebProcess ID
+  pgrep=$(pgrep -lP ${weathermapProcessID})
+  set ${pgrep}
+  WebKitWebProcesID=$3
+
+  # call cpulimit
+  cpulimit -l 5 -p ${WebKitWebProcesID}
+fi
+
+
