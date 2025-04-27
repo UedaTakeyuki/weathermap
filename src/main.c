@@ -128,10 +128,15 @@ int main(int argc, char* argv[]){
   // Make sure the main window and all its contents are visible
   gtk_widget_show_all(main_window);
 
-  // change font size
+  // get settings
   WebKitSettings *settings = webkit_web_view_get_settings (webView);
+  // change font size
   webkit_settings_set_default_font_size(settings, 48);
   webkit_settings_set_enable_write_console_messages_to_stdout(settings, TRUE);
+  // User Agent spoofing
+  webkit_settings_set_user_agent (settings, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36");
+  // set settings
+  webkit_web_view_set_settings (webView, settings);
 
   // horizontal scroll
 //  GtkAdjustment* adjustment = gtk_scrolled_window_get_hadjustment (webView);
