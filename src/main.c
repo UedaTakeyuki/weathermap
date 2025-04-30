@@ -1,10 +1,11 @@
 // https://wiki.gnome.org/Projects/WebKitGtk/ProgrammingGuide/Tutorial
 #include <gtk/gtk.h>
-#include <webkit2/webkit2.h>
+//#include <webkit2/webkit2.h>
 //#include "displaysize.h"
 #include "ipc/ipc.h"
 #include "screensize/screensize.h"
 #include "restrictcpu/restrictcpu.h"
+#include "webView/webView.h"
 
 // GtkWidget *main_window;
 
@@ -86,7 +87,8 @@ int main(int argc, char* argv[]){
   gtk_window_move(GTK_WINDOW(main_window),0, 36);
 
   // Create a browser instance
-  WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
+  WebKitWebView *webView = create_browser_instance();
+  //WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
 
   // Set zoom level with current width for width 1024.
   gdouble zoom_level = (gdouble)(wh->width) / 1024.0;
@@ -128,6 +130,7 @@ int main(int argc, char* argv[]){
   // Make sure the main window and all its contents are visible
   gtk_widget_show_all(main_window);
 
+/*
   // get settings
   WebKitSettings *settings = webkit_web_view_get_settings (webView);
   // change font size
@@ -148,6 +151,7 @@ int main(int argc, char* argv[]){
   // get enable_write_console_messages_to_stdout
   g_warning("enable_write_console_messages_to_stdout: %d",
             webkit_settings_get_enable_write_console_messages_to_stdout(settings));
+*/
 
   // read script
   gchar *allowCookiesScript;
