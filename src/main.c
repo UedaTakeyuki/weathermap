@@ -27,7 +27,7 @@ static gboolean once_cb(gpointer user_data){
                                  NULL, //web_view_javascript_finished,
                                  NULL);
   g_warning("script: %s", param->script);
-  g_print("once_cb done.\n");
+  g_message("once_cb done.\n");
   return FALSE;
 }
 
@@ -41,7 +41,7 @@ static gboolean repeated_cb(gpointer user_data){
                                  NULL, //web_view_javascript_finished,
                                  NULL);
 //  g_warning("script: %s", param->script);
-  g_print("once_cb done.\n");
+  g_message("repeated_cb done.\n");
   return TRUE;
 }
 
@@ -64,7 +64,7 @@ static void refresh_site_every_5_minutes(gpointer user_data){
                                    NULL,
                                    NULL, //web_view_javascript_finished,
                                    NULL);
-    g_print("once_cb done.\n");
+    g_message("refresh_site_every_5_minutes done.\n");
   }
 }
 
@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
 
   // Set zoom level with current width for width 1024.
   gdouble zoom_level = (gdouble)(wh->width) / 1024.0;
-  g_print("zoom_level: %lf\n", zoom_level);
+  g_message("zoom_level: %lf\n", zoom_level);
   //webkit_web_view_set_zoom_level(webView,  zoom_level);
 
   // Put the browser area into the main window
