@@ -13,7 +13,7 @@ echo $1
 echo $4
 
 #if [ "$6" = "?" ]; then
-if [ "$2" = "?" ]; then
+if [ "$2" = "?" ]; then # Since the TTY is "?", this is the service
   # delay until the drawing is finished
   sleep 100
 
@@ -26,7 +26,5 @@ if [ "$2" = "?" ]; then
   WebKitWebProcesID=$3
 
   # call cpulimit
-  cpulimit -l 5 -p ${WebKitWebProcesID}
+  cpulimit -l 75 -p ${WebKitWebProcesID}
 fi
-
-
