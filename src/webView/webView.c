@@ -12,11 +12,11 @@ static void web_view_load_changed (WebKitWebView  *web_view,
     uri = webkit_web_view_get_uri (web_view);
     // Here we could start a spinner or update the
     // location bar with the provisional URI
-    g_print("WEBKIT_LOAD_STARTED: provisional_uri = %s\n", uri);
+    g_message("WEBKIT_LOAD_STARTED: provisional_uri = %s\n", uri);
     break;
   case WEBKIT_LOAD_REDIRECTED:
     uri = webkit_web_view_get_uri (web_view);
-    g_print("WEBKIT_LOAD_REDIRECTED: redirected_uri = %s\n", uri);
+    g_message("WEBKIT_LOAD_REDIRECTED: redirected_uri = %s\n", uri);
     break;
   case WEBKIT_LOAD_COMMITTED:
     // The load is being performed. Current URI is
@@ -24,11 +24,11 @@ static void web_view_load_changed (WebKitWebView  *web_view,
     // load is requested or a navigation within the
     // same page is performed
     uri = webkit_web_view_get_uri (web_view);
-    g_print("WEBKIT_LOAD_COMMITTED: uri = %s\n", uri);
+    g_message("WEBKIT_LOAD_COMMITTED: uri = %s\n", uri);
     break;
   case WEBKIT_LOAD_FINISHED:
     // Load finished, we can now stop the spinner
-    g_print("WEBKIT_LOAD_FINISHED:\n");
+    g_message("WEBKIT_LOAD_FINISHED:\n");
     break;
   }
 }
