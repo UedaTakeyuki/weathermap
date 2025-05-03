@@ -11,10 +11,12 @@ try {
 }
 */
 try {
+  console.log("### reload start ###")
   console.log("url before reload", location.href)
 //  location.reload()
   location.replace(myOpenWeatherURL)
   console.log("url after reload", location.href)
+  console.log("### reload finish ###")
 } catch (e) {
   console.log("Javascript ERROR:", e.name + ': ' + e.message);
 }
