@@ -48,6 +48,13 @@ static gboolean repeated_cb(gpointer user_data){
 static void refresh_site_every_5_minutes(gpointer user_data){
   OnceCbParamType *param = user_data;
   for (;;) {
+    webkit_web_view_run_javascript(param->webView,
+                                   param->script,
+                                   NULL,
+                                   NULL, //web_view_javascript_finished,
+                                   NULL);
+    g_message("refresh_site_every_5_minutes done.\n");
+
 //    delay(300000);
 //    sleep(300);
     {
@@ -59,12 +66,6 @@ static void refresh_site_every_5_minutes(gpointer user_data){
       select(0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &t);
       g_print("after select.\n");
     }
-    webkit_web_view_run_javascript(param->webView,
-                                   param->script,
-                                   NULL,
-                                   NULL, //web_view_javascript_finished,
-                                   NULL);
-    g_message("refresh_site_every_5_minutes done.\n");
   }
 }
 
