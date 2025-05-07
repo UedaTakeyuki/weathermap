@@ -1,4 +1,6 @@
 #include "webView.h"
+#include "js.h"
+#include <webkit2/webkit2.h>
 
 // Call back for load-changed event
 static void web_view_load_changed (WebKitWebView  *web_view,
@@ -33,6 +35,38 @@ static void web_view_load_changed (WebKitWebView  *web_view,
   }
 }
 
+void load_url_and_add_javascripts(WebKitWebView *webView){
+
+  // read city ID
+  static gchar *cityID; 
+  cityID = readTextFile("cityID.txt", NULL);
+
+  // url to load
+  gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
+
+  // load url 
+  webkit_web_view_load_uri(webView, url);
+  g_free (url);
+
+  // read script
+  static gchar *relodeScript;
+  relodeScript = readTextFile("relode.js", NULL);
+
+  // concatinate URL
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
+  g_warning("script: %s", relodeScript);
+
+  // make param
+  static OnceCbParamType reloadParam;
+  reloadParam.webView = webView;
+  reloadParam.script = relodeScript;
+
+  // call once_cb every 5 min.
+  //g_timeout_add (300000, repeated_cb, &reloadParam);
+  //g_timeout_add_seconds (300, repeated_cb, &reloadParam);
+  GThread *thread_refresh_site = g_thread_new("refresh_site thread", (gpointer)&refresh_site_every_5_minutes, &reloadParam);
+}
+
 // Create a browser instance
 WebKitWebView * create_browser_instance(){
   WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
@@ -53,6 +87,9 @@ WebKitWebView * create_browser_instance(){
   // get enable_write_console_messages_to_stdout
   g_warning("enable_write_console_messages_to_stdout: %d",
             webkit_settings_get_enable_write_console_messages_to_stdout(settings));
+
+  // load url and add javascripts
+  load_url_and_add_javascripts(webView);
   
   return webView;
 }

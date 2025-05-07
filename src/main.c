@@ -48,9 +48,10 @@ int main(int argc, char* argv[]){
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
+/*
   // read city ID
   gchar *cityID = readTextFile("cityID.txt", NULL);
-/*
+
   gchar *contents;
   gsize length;
   GError *error;
@@ -63,13 +64,14 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
-*/
+
   // Load a web page into the browser instance
   // webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
   gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
 //  g_free (contents);
   webkit_web_view_load_uri(webView, url);
   g_free (url);
+*/
 
   // Make sure that when the browser area becomes visible, it will get mouse
   // and keyboard events
@@ -103,9 +105,10 @@ int main(int argc, char* argv[]){
   g_timeout_add_seconds (90, once_cb, &param);
   //once_cb((gpointer)&param);
 
+/*
   // read script
   gchar *relodeScript = readTextFile("relode.js", NULL);
-/*
+
   if (g_file_get_contents ("relode.js",
                      &relodeScript,
                      &length,
@@ -115,7 +118,7 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
-*/
+
   // concatinate URL
   relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
@@ -129,7 +132,7 @@ int main(int argc, char* argv[]){
   //g_timeout_add (300000, repeated_cb, &reloadParam);
   //g_timeout_add_seconds (300, repeated_cb, &reloadParam);
   GThread *thread_refresh_site = g_thread_new("refresh_site thread", (gpointer)&refresh_site_every_5_minutes, &reloadParam);
-
+*/
   // Run the server thread
 /*
   g_warning ("Before Thread RUnning");
