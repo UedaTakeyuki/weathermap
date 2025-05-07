@@ -69,6 +69,21 @@ static void refresh_site_every_5_minutes(gpointer user_data){
   }
 }
 
+gchar *readTextFile(gchar *filename, gsize *length){
+  GError *error;
+  gchar *contents;
+  if (g_file_get_contents (filename,
+                     &contents,
+                     length,
+                     &error)){
+    return contents;
+  } else {
+    g_warning ("Error: can't read file %s: %s", filename, error->message);
+    g_error_free (error);
+    return NULL;
+  }
+}
+
 int main(int argc, char* argv[]){
   // Initialize GTK+
   gtk_init(&argc, &argv);
@@ -105,6 +120,8 @@ int main(int argc, char* argv[]){
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
   // read city ID
+  gchar *cityID = readTextFile("cityID.txt", NULL);
+/*
   gchar *contents;
   gsize length;
   GError *error;
@@ -117,9 +134,10 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
+*/
   // Load a web page into the browser instance
   // webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
-  gchar *url = g_strconcat("https://openweathermap.org/city/", contents, NULL);
+  gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
 //  g_free (contents);
   webkit_web_view_load_uri(webView, url);
   g_free (url);
@@ -131,31 +149,10 @@ int main(int argc, char* argv[]){
   // Make sure the main window and all its contents are visible
   gtk_widget_show_all(main_window);
 
-/*
-  // get settings
-  WebKitSettings *settings = webkit_web_view_get_settings (webView);
-  // change font size
-  webkit_settings_set_default_font_size(settings, 48);
-  webkit_settings_set_enable_write_console_messages_to_stdout(settings, TRUE);
-  // User Agent spoofing
-  webkit_settings_set_user_agent (settings, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36");
-  // set settings
-  webkit_web_view_set_settings (webView, settings);
-
-  // horizontal scroll
-//  GtkAdjustment* adjustment = gtk_scrolled_window_get_hadjustment (webView);
-//  gtk_adjustment_set_value (adjustment, 32);
-
-  // https://stackoverflow.com/a/21861770/11073131
-  //webkit_web_view_run_javascript(webView, "window.scrollTo(1500,500)", NULL, NULL, NULL);
-
-  // get enable_write_console_messages_to_stdout
-  g_warning("enable_write_console_messages_to_stdout: %d",
-            webkit_settings_get_enable_write_console_messages_to_stdout(settings));
-*/
 
   // read script
-  gchar *allowCookiesScript;
+  gchar *allowCookiesScript = readTextFile("allowCookies.js", NULL);
+/*
   if (g_file_get_contents ("allowCookies.js",
                      &allowCookiesScript,
                      &length,
@@ -165,6 +162,7 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
+*/
 
   // make param
   OnceCbParamType param;
@@ -177,7 +175,8 @@ int main(int argc, char* argv[]){
   //once_cb((gpointer)&param);
 
   // read script
-  gchar *relodeScript;
+  gchar *relodeScript = readTextFile("relode.js", NULL);
+/*
   if (g_file_get_contents ("relode.js",
                      &relodeScript,
                      &length,
@@ -187,9 +186,9 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
-
+*/
   // concatinate URL
-  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", contents, "'\n", relodeScript, NULL);
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
 
   // make param
