@@ -48,6 +48,19 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   webkit_web_view_load_uri(webView, url);
   g_free (url);
 
+  
+  // read script
+  static gchar *allowCookiesScript;
+  allowCookiesScript = readTextFile("allowCookies.js", NULL);
+
+  // make param
+  static OnceCbParamType param_allowCookies;
+  param_allowCookies.webView = webView;
+  param_allowCookies.script = allowCookiesScript;
+
+  // call script after 1 min 30sec
+  g_timeout_add_seconds (90, once_cb, &param_allowCookies);
+
   // read script
   static gchar *relodeScript;
   relodeScript = readTextFile("relode.js", NULL);

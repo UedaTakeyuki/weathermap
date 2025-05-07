@@ -80,10 +80,10 @@ int main(int argc, char* argv[]){
   // Make sure the main window and all its contents are visible
   gtk_widget_show_all(main_window);
 
-
+/*
   // read script
   gchar *allowCookiesScript = readTextFile("allowCookies.js", NULL);
-/*
+
   if (g_file_get_contents ("allowCookies.js",
                      &allowCookiesScript,
                      &length,
@@ -93,7 +93,7 @@ int main(int argc, char* argv[]){
     g_warning ("Error running javascript: %s", error->message);
     g_error_free (error);
   }
-*/
+
 
   // make param
   OnceCbParamType param;
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
   //GSource* gsource = g_timeout_source_new_seconds (300);
   g_timeout_add_seconds (90, once_cb, &param);
   //once_cb((gpointer)&param);
-
+*/
 /*
   // read script
   gchar *relodeScript = readTextFile("relode.js", NULL);
