@@ -6,6 +6,7 @@
 #include "screensize/screensize.h"
 #include "restrictcpu/restrictcpu.h"
 #include "webView/webView.h"
+#include "webView/js.h"
 
 // GtkWidget *main_window;
 
@@ -66,21 +67,6 @@ static void refresh_site_every_5_minutes(gpointer user_data){
       select(0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &t);
       g_print("after select.\n");
     }
-  }
-}
-
-gchar *readTextFile(gchar *filename, gsize *length){
-  GError *error;
-  gchar *contents;
-  if (g_file_get_contents (filename,
-                     &contents,
-                     length,
-                     &error)){
-    return contents;
-  } else {
-    g_warning ("Error: can't read file %s: %s", filename, error->message);
-    g_error_free (error);
-    return NULL;
   }
 }
 
