@@ -13,11 +13,6 @@
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
 
-typedef	struct {
-	WebKitWebView *webView;
-  gchar *script;
-} OnceCbParamType;
-
 static gboolean once_cb(gpointer user_data){
   // https://stackoverflow.com/a/21861770/11073131
   OnceCbParamType *param = user_data;
