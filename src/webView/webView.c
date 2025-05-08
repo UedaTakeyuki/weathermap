@@ -37,6 +37,10 @@ static void web_view_load_changed (WebKitWebView  *web_view,
 
 void load_url_and_add_javascripts(WebKitWebView *webView){
 
+  ////////////////
+  // load url
+  ////////////////
+
   // read city ID
   static gchar *cityID; 
   cityID = readTextFile("cityID.txt", NULL);
@@ -49,6 +53,10 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   g_free (url);
 
   
+  //////////////////////////
+  // script to allow Cookies
+  //////////////////////////
+
   // read script
   static gchar *allowCookiesScript;
   allowCookiesScript = readTextFile("allowCookies.js", NULL);
@@ -60,6 +68,10 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
 
   // call script after 1 min 30sec
   g_timeout_add_seconds (90, once_cb, &param_allowCookies);
+
+  //////////////////////////
+  // script to reload
+  //////////////////////////
 
   // read script
   static gchar *relodeScript;

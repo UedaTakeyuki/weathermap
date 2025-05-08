@@ -1,14 +1,9 @@
 // https://wiki.gnome.org/Projects/WebKitGtk/ProgrammingGuide/Tutorial
 #include <gtk/gtk.h>
-//#include <webkit2/webkit2.h>
-//#include "displaysize.h"
-#include "ipc/ipc.h"
-#include "screensize/screensize.h"
-#include "restrictcpu/restrictcpu.h"
-#include "webView/webView.h"
-#include "webView/js.h"
 
-// GtkWidget *main_window;
+#include "screensize/screensize.h"
+//#include "restrictcpu/restrictcpu.h"
+#include "webView/webView.h"
 
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window);
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window);
@@ -31,9 +26,8 @@ int main(int argc, char* argv[]){
   gtk_window_set_default_size(GTK_WINDOW(main_window), setting_width, setting_height);
   gtk_window_move(GTK_WINDOW(main_window),0, 36);
 
-  // Create a browser instance
+  // Create webView
   WebKitWebView *webView = create_browser_instance();
-  //WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
 
   // Set zoom level with current width for width 1024.
   gdouble zoom_level = (gdouble)(wh->width) / 1024.0;
@@ -48,101 +42,12 @@ int main(int argc, char* argv[]){
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
   g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
-/*
-  // read city ID
-  gchar *cityID = readTextFile("cityID.txt", NULL);
-
-  gchar *contents;
-  gsize length;
-  GError *error;
-  if (g_file_get_contents ("cityID.txt",
-                     &contents,
-                     &length,
-                     &error)){
-    g_warning("city ID: %s", contents);
-  } else {
-    g_warning ("Error running javascript: %s", error->message);
-    g_error_free (error);
-  }
-
-  // Load a web page into the browser instance
-  // webkit_web_view_load_uri(webView, "https://openweathermap.org/city/1852278");
-  gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
-//  g_free (contents);
-  webkit_web_view_load_uri(webView, url);
-  g_free (url);
-*/
-
   // Make sure that when the browser area becomes visible, it will get mouse
   // and keyboard events
   gtk_widget_grab_focus(GTK_WIDGET(webView));
 
   // Make sure the main window and all its contents are visible
   gtk_widget_show_all(main_window);
-
-/*
-  // read script
-  gchar *allowCookiesScript = readTextFile("allowCookies.js", NULL);
-
-  if (g_file_get_contents ("allowCookies.js",
-                     &allowCookiesScript,
-                     &length,
-                     &error)){
-//    g_warning("script: %s", allowCookiesScript);
-  } else {
-    g_warning ("Error running javascript: %s", error->message);
-    g_error_free (error);
-  }
-
-
-  // make param
-  OnceCbParamType param;
-  param.webView = webView;
-  param.script = allowCookiesScript;
-
-  // call script after 1 min 30sec
-  //GSource* gsource = g_timeout_source_new_seconds (300);
-  g_timeout_add_seconds (90, once_cb, &param);
-  //once_cb((gpointer)&param);
-*/
-/*
-  // read script
-  gchar *relodeScript = readTextFile("relode.js", NULL);
-
-  if (g_file_get_contents ("relode.js",
-                     &relodeScript,
-                     &length,
-                     &error)){
-//    g_warning("script: %s", relodeScript);
-  } else {
-    g_warning ("Error running javascript: %s", error->message);
-    g_error_free (error);
-  }
-
-  // concatinate URL
-  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
-  g_warning("script: %s", relodeScript);
-
-  // make param
-  OnceCbParamType reloadParam;
-  reloadParam.webView = webView;
-  reloadParam.script = relodeScript;
-
-  // call once_cb every 5 min.
-  //g_timeout_add (300000, repeated_cb, &reloadParam);
-  //g_timeout_add_seconds (300, repeated_cb, &reloadParam);
-  GThread *thread_refresh_site = g_thread_new("refresh_site thread", (gpointer)&refresh_site_every_5_minutes, &reloadParam);
-*/
-  // Run the server thread
-/*
-  g_warning ("Before Thread RUnning");
-  GThread *thread_ice = g_thread_new("ICE thread", (gpointer)&server, NULL);
-  g_warning ("Before Thread Join");
-//  g_thread_join(thread_ice);
-  g_warning ("Before Thread unref");
-  g_thread_unref(thread_ice);
-  g_warning ("After Thread unref");
-*/
 
   // Restrict CPU usage of WebKitWebProces
   //g_timeout_add_seconds (100, cpu_restrict_cb, NULL);
@@ -162,4 +67,3 @@ static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window){
   gtk_widget_destroy(window);
   return TRUE;
 }
-
