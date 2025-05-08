@@ -67,3 +67,60 @@ void refresh_site_every_5_minutes(gpointer user_data){
     }
   }
 }
+
+void load_url_and_add_javascripts(WebKitWebView *webView){
+
+  ////////////////
+  // load url
+  ////////////////
+
+  // read city ID
+  static gchar *cityID; 
+  cityID = readTextFile("cityID.txt", NULL);
+
+  // url to load
+  gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
+
+  // load url 
+  webkit_web_view_load_uri(webView, url);
+  g_free (url);
+
+  
+  //////////////////////////
+  // script to allow Cookies
+  //////////////////////////
+
+  // read script
+  static gchar *allowCookiesScript;
+  allowCookiesScript = readTextFile("allowCookies.js", NULL);
+
+  // make param
+  static OnceCbParamType param_allowCookies;
+  param_allowCookies.webView = webView;
+  param_allowCookies.script = allowCookiesScript;
+
+  // call script after 1 min 30sec
+  g_timeout_add_seconds (90, once_cb, &param_allowCookies);
+
+  //////////////////////////
+  // script to reload
+  //////////////////////////
+
+  // read script
+  static gchar *relodeScript;
+  relodeScript = readTextFile("relode.js", NULL);
+
+  // concatinate URL
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
+  g_warning("script: %s", relodeScript);
+
+  // make param
+  static OnceCbParamType reloadParam;
+  reloadParam.webView = webView;
+  reloadParam.script = relodeScript;
+
+  // call once_cb every 5 min.
+  //g_timeout_add (300000, repeated_cb, &reloadParam);
+  //g_timeout_add_seconds (300, repeated_cb, &reloadParam);
+  GThread *thread_refresh_site = g_thread_new("refresh_site thread", (gpointer)&refresh_site_every_5_minutes, &reloadParam);
+}

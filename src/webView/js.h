@@ -10,10 +10,6 @@ typedef	struct {
   gchar *script;
 } OnceCbParamType;
 
-gboolean once_cb(gpointer user_data);
-
-gboolean repeated_cb(gpointer user_data);
-
-void refresh_site_every_5_minutes(gpointer user_data);
+void load_url_and_add_javascripts(WebKitWebView *webView);
 
 #endif /* JS */
