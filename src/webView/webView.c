@@ -8,6 +8,7 @@ WebKitWebView * create_browser_instance(){
 
   // set call back for load_changed event
   g_signal_connect(webView, "load_changed", G_CALLBACK(web_view_load_changed), NULL);
+  g_signal_connect(webView, "load_failed",  G_CALLBACK(web_view_load_failed), NULL);
 
   // get settings
   WebKitSettings *settings = webkit_web_view_get_settings (webView);

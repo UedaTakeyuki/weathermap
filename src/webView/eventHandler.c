@@ -1,10 +1,7 @@
 #include <webkit2/webkit2.h>
 
-// Call back for load-changed event
-void web_view_load_changed (WebKitWebView  *web_view,
-                            WebKitLoadEvent load_event,
-                            gpointer        user_data)
-{
+static void show_load_event(WebKitWebView  *web_view,
+                            WebKitLoadEvent load_event){
   const gchar* uri;
   switch (load_event) {
   case WEBKIT_LOAD_STARTED:
@@ -30,5 +27,29 @@ void web_view_load_changed (WebKitWebView  *web_view,
     // Load finished, we can now stop the spinner
     g_message("WEBKIT_LOAD_FINISHED:\n");
     break;
+  }
+}
+
+// Call back for load-changed event
+void web_view_load_changed (WebKitWebView  *web_view,
+                            WebKitLoadEvent load_event,
+                            gpointer        user_data)
+{
+  show_load_event(web_view, load_event);
+}
+
+// Call back for load-faild event
+gboolean web_view_load_failed (
+  WebKitWebView* web_view,
+  WebKitLoadEvent load_event,
+  gchar* failing_uri,
+  GError* error,
+  gpointer user_data
+){
+  g_message("Error: loading %s", failing_uri);
+  show_load_event(web_view, load_event);
+  if (error != NULL){
+    g_warning ("Error: can't load %s: %s", failing_uri, error->message);
+    g_error_free (error);
   }
 }
