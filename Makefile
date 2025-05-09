@@ -9,4 +9,4 @@ weathermap: $(ALL)
 	# $< the first name of dependency
 	# $^ all dependencies of the target
 	# https://tex2e.github.io/blog/makefile/automatic-variables
-	gcc -g  -pg `pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0` -o $@ $(SRCS) $(EXTOBJS) # -I $(EXTPATH)
+	gcc $(SRCS) $(EXTOBJS) -g  -pg `pkg-config --cflags --libs webkit2gtk-4.0` -o $@ # -I $(EXTPATH)
