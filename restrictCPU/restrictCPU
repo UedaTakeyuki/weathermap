@@ -26,5 +26,5 @@ if [ "$2" = "?" ]; then # Since the TTY is "?", this is the service
   WebKitWebProcesID=$3
 
   # call cpulimit
-  cpulimit -l 30 -p ${WebKitWebProcesID}
+  cpulimit -l 10 -p ${WebKitWebProcesID}
 fi
