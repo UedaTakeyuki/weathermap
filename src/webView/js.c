@@ -79,7 +79,7 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   cityID = readTextFile("cityID.txt", NULL);
 
   // url to load
-  gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
+  gchar *url = g_strconcat("https://old.openweathermap.org/city/", cityID, NULL);
 
   // load url 
   webkit_web_view_load_uri(webView, url);
@@ -111,7 +111,7 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   relodeScript = readTextFile("relode.js", NULL);
 
   // concatinate URL
-  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://old.openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
 
   // make param
