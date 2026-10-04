@@ -78,6 +78,10 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   static gchar *cityID; 
   cityID = readTextFile("cityID.txt", NULL);
 
+  // TLSエラーポリシーを「IGNORE（無視）」に設定
+  WebKitWebContext *context = webkit_web_view_get_context(webView);
+  webkit_web_context_set_tls_errors_policy(context, WEBKIT_TLS_ERRORS_POLICY_IGNORE);
+
   // url to load
   gchar *url = g_strconcat("https://old.openweathermap.org/city/", cityID, NULL);
 
