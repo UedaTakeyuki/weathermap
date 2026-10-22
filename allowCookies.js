@@ -8,6 +8,7 @@ function startallowCookie(){
   ptimer = setInterval(allowCookie,1000/*delaySec*//*)
 }
 */
+/*
 function allowCookie(){
   console.log("KERO!!!!!YOOOO!!!!ON!!!!!")
   const optin_button = document.querySelector('.gdpr-banner__button--opt-in');
@@ -17,6 +18,14 @@ function allowCookie(){
 //    clearInterval(ptimer);
   } else {
     console.log("calling next allowCookies")
+  }
+}
+*/
+function allowCookie(){
+  // IDで指定して削除
+  const target = document.getElementById('yads-pc-overlay');
+  if (target) {
+    target.remove();
   }
 }
 allowCookie()

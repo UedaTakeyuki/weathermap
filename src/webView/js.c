@@ -83,7 +83,9 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   webkit_web_context_set_tls_errors_policy(context, WEBKIT_TLS_ERRORS_POLICY_IGNORE);
 
   // url to load
-  gchar *url = g_strconcat("https://old.openweathermap.org/city/", cityID, NULL);
+  // gchar *url = g_strconcat("https://old.openweathermap.org/city/", cityID, NULL);
+  // gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
+  gchar *url = g_strconcat("https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "", NULL);
 
   // load url 
   webkit_web_view_load_uri(webView, url);
@@ -115,7 +117,8 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   relodeScript = readTextFile("relode.js", NULL);
 
   // concatinate URL
-  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://old.openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
+//  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://old.openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
 
   // make param
