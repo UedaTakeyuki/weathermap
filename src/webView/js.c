@@ -85,7 +85,9 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
   // url to load
   // gchar *url = g_strconcat("https://old.openweathermap.org/city/", cityID, NULL);
   // gchar *url = g_strconcat("https://openweathermap.org/city/", cityID, NULL);
-  gchar *url = g_strconcat("https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "", NULL);
+  // gchar *url = g_strconcat("https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "", NULL);
+  // gchar *url = g_strconcat("https://weathernews.jp/onebox/tenki/kanagawa/14130/", "", NULL);
+  gchar *url = g_strconcat("https://noadsweather.com/?q=shimokodanaka", "", NULL);
 
   // load url 
   webkit_web_view_load_uri(webView, url);
@@ -118,7 +120,9 @@ void load_url_and_add_javascripts(WebKitWebView *webView){
 
   // concatinate URL
 //  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://old.openweathermap.org/city/", cityID, "'\n", relodeScript, NULL);
-  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "'\n", relodeScript, NULL);
+//  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://weather.yahoo.co.jp/weather/jp/14/4610/14134.html", "'\n", relodeScript, NULL);
+//  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://weathernews.jp/onebox/tenki/kanagawa/14130/", "'\n", relodeScript, NULL);
+  relodeScript = g_strconcat("const myOpenWeatherURL = '", "https://noadsweather.com/?q=shimokodanaka", "'\n", relodeScript, NULL);
   g_warning("script: %s", relodeScript);
 
   // make param
